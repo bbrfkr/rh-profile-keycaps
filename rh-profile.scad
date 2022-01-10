@@ -1,4 +1,4 @@
-include <./includes.scad>
+include <../includes.scad>
 
 $stem_type = "rounded_cherry";
 $stem_support_type = "disable";
@@ -23,7 +23,7 @@ module smooth(r=1)
 
 $fn = 128;
 
-difference(){
+module base_top() {
     hull(){
         translate([0,0,9]) sphere(9);
         linear_extrude(0.01) {
@@ -32,6 +32,9 @@ difference(){
             }
         }
     }
+}
+
+module base_bottom() {
     hull() {
         translate([0,0,3.5]) linear_extrude(0.1) smooth() projection(){
             cube([14,14,0.01], center=true);
@@ -41,4 +44,13 @@ difference(){
         }
     }
 }
-rounded_cherry_stem(3.6, $stem_slop);
+
+module full() {
+    difference(){
+        base_top();
+        base_bottom();
+    }
+    rounded_cherry_stem(3.6, $stem_slop);
+}
+
+full();
